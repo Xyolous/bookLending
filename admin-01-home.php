@@ -16,9 +16,9 @@ function fetchCount($conn, $sql, $column)
 function fetchActivityList($conn, $sql)
 {
     $result = $conn->query($sql);
-    $list = []; // Default empty array
+    $list = [];
 
-    if ($result) { // Check if query was successful
+    if ($result) {
         while ($row = $result->fetch_assoc()) {
             $list[] = $row;
         }
@@ -83,7 +83,7 @@ $sql_recent_overdues = "SELECT
                            WHERE
                              t.transaction_status = 'Borrowed' AND t.due_date < CURDATE()
                            ORDER BY
-                             t.borrow_date DESC -- Or t.due_date ASC if you want oldest overdues first
+                             t.borrow_date DESC
                            LIMIT 5";
 $recent_overdues = fetchActivityList($conn, $sql_recent_overdues);
 
@@ -138,7 +138,7 @@ $conn->close();
     <nav>
         <div class="nav-logo">
             <img src="" alt="site-logo" />
-            <h1>Library mo 'to</h1>
+            <h1>Banaag</h1>
         </div>
 
         <div class="nav-links">

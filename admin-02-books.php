@@ -2,10 +2,6 @@
 
 include 'authentication-admin.php';
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 function set_js_alert($type, $message)
 {
     $_SESSION['js_alert'] = ['type' => $type, 'message' => $message];
@@ -24,7 +20,14 @@ function get_book_post_data()
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (!$conn || !is_object($conn) || !method_exists($conn, 'prepare')) {
+        set_js_alert('error', 'Database connection not available. Cannot perform action.');
+        header("Location: admin-02-books.php");
+        exit();
+    }
+
     $is_delete_attempt = isset($_POST['delete_book']);
+    $is_return_attempt = isset($_POST['return_book']);
 
     try {
         $book_data = [];
@@ -110,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             set_js_alert('success', 'Book deleted successfully!');
             header("Location: admin-02-books.php");
             exit();
-        } elseif (isset($_POST['return_book'])) {
+        } elseif ($is_return_attempt) {
             $bid = (int)($_POST['BID'] ?? 0);
 
             if ($bid <= 0) {
@@ -119,37 +122,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 exit();
             }
 
-            if (!$conn || !is_object($conn) || !method_exists($conn, 'begin_transaction')) {
-                error_log("Database connection not available for transaction.");
-                set_js_alert('error', 'Database connection error. Cannot perform action.');
+            if (!$conn->begin_transaction()) {
+                throw new mysqli_sql_exception("Beginning transaction failed: " . $conn->error);
+            }
+
+            try {
+                $update_book_sql = "UPDATE books SET status = 'Available' WHERE bid = ?";
+                $stmt_update_book = $conn->prepare($update_book_sql);
+                if (!$stmt_update_book) {
+                    throw new mysqli_sql_exception("Prepare failed: " . $conn->error);
+                }
+                $stmt_update_book->bind_param("i", $bid);
+                $stmt_update_book->execute();
+                $stmt_update_book->close();
+
+                $return_date = date('Y-m-d');
+                $update_transaction_sql = "UPDATE transaction SET return_date = ?, transaction_status = 'Returned' WHERE BID = ? AND (transaction_status = 'Borrowed' OR transaction_status = 'Overdue') ORDER BY borrow_date DESC LIMIT 1";
+                $stmt_update_transaction = $conn->prepare($update_transaction_sql);
+                if (!$stmt_update_transaction) {
+                    throw new mysqli_sql_exception("Prepare failed: " . $conn->error);
+                }
+                $stmt_update_transaction->bind_param("si", $return_date, $bid);
+                $stmt_update_transaction->execute();
+                $stmt_update_transaction->close();
+
+                $conn->commit();
+                set_js_alert('success', 'Book returned successfully!');
                 header("Location: admin-02-books.php");
                 exit();
+            } catch (mysqli_sql_exception $e) {
+                if ($conn->in_transaction) {
+                    $conn->rollback();
+                }
+                throw $e;
             }
-            $conn->begin_transaction();
-
-            $update_book_sql = "UPDATE books SET status = 'Available' WHERE bid = ?";
-            $stmt_update_book = $conn->prepare($update_book_sql);
-            if (!$stmt_update_book) {
-                throw new mysqli_sql_exception("Prepare failed: " . $conn->error);
-            }
-            $stmt_update_book->bind_param("i", $bid);
-            $stmt_update_book->execute();
-            $stmt_update_book->close();
-
-            $return_date = date('Y-m-d');
-            $update_transaction_sql = "UPDATE transaction SET return_date = ?, transaction_status = 'Returned' WHERE BID = ? AND (transaction_status = 'Borrowed' OR transaction_status = 'Overdue') ORDER BY borrow_date DESC LIMIT 1";
-            $stmt_update_transaction = $conn->prepare($update_transaction_sql);
-            if (!$stmt_update_transaction) {
-                throw new mysqli_sql_exception("Prepare failed: " . $conn->error);
-            }
-            $stmt_update_transaction->bind_param("si", $return_date, $bid);
-            $stmt_update_transaction->execute();
-            $stmt_update_transaction->close();
-
-            $conn->commit();
-            set_js_alert('success', 'Book returned successfully!');
-            header("Location: admin-02-books.php");
-            exit();
         }
     } catch (mysqli_sql_exception $e) {
         if ($conn && is_object($conn) && method_exists($conn, 'rollback') && $conn->in_transaction) {
@@ -227,7 +233,7 @@ $books_result = false;
 $fetch_error = null;
 
 try {
-    if ($conn && is_object($conn)) {
+    if ($conn && is_object($conn) && $conn->ping()) {
         $stmt = $conn->prepare($query);
         if (!$stmt) {
             throw new mysqli_sql_exception("Prepare failed: " . $conn->error);
@@ -253,25 +259,35 @@ try {
 }
 
 $locations = [];
-$location_query = "SELECT DISTINCT book_location FROM books WHERE book_location IS NOT NULL AND book_location != '' ORDER BY book_location";
-try {
-    if ($conn && is_object($conn) && $conn->ping()) {
-        $location_result = $conn->query($location_query);
-        if ($location_result) {
-            while ($row = $location_result->fetch_assoc()) {
-                $locations[] = $row['book_location'];
+if ($conn && is_object($conn) && $conn->ping()) {
+    $location_query = "SELECT DISTINCT book_location FROM books WHERE book_location IS NOT NULL AND book_location != '' ORDER BY book_location";
+    try {
+        if ($conn && is_object($conn) && $conn->ping()) {
+            $location_result = $conn->query($location_query);
+            if ($location_result) {
+                while ($row = $location_result->fetch_assoc()) {
+                    $locations[] = $row['book_location'];
+                }
+                $location_result->free();
             }
-            $location_result->free();
+        } else {
+            error_log("Database connection not available to fetch locations after potential close.");
         }
-    } else {
-        error_log("Database connection not available to fetch locations.");
+    } catch (mysqli_sql_exception $e) {
+        error_log("Error fetching distinct locations: " . $e->getMessage());
     }
-} catch (mysqli_sql_exception $e) {
-    error_log("Error fetching distinct locations: " . $e->getMessage());
+} else {
+    error_log("Database connection not available to fetch locations initially.");
 }
 
+
 if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping()) {
-    $conn->close();
+    try {
+        $conn->query("SELECT 1");
+        $conn->close();
+    } catch (mysqli_sql_exception $e) {
+        error_log("Error closing database connection: " . $e->getMessage());
+    }
 }
 ?>
 
@@ -362,7 +378,7 @@ if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping())
     <main>
         <section id="insert-book">
             <h2>Insert Book</h2>
-            <form method="POST">
+            <form method="POST" id="insert-book-form" onsubmit="return confirm('Are you sure you want to insert this book?');">
                 <input type="text" name="title" placeholder="Title" required />
                 <input type="text" name="author" placeholder="Author" required />
                 <input type="date" name="date_published" required />
@@ -483,24 +499,29 @@ if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping())
                                 <td data-label="Updated"><?= htmlspecialchars($row['date_updated']) ?></td>
                                 <td class="actions-cell">
                                     <button onclick='openModal(<?= json_encode($row) ?>)' type="button">Edit</button>
-                                    <form method="POST" style="display:inline;">
+                                    <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this book?');">
                                         <input type="hidden" name="BID" value="<?= htmlspecialchars($row['bid']) ?>">
-                                        <button type="submit" name="delete_book" onclick="return confirm('Delete this book?')">Delete</button>
+                                        <button type="submit" name="delete_book">Delete</button>
                                     </form>
                                     <?php
                                     $is_returnable = ($row['status'] === 'Borrowed' || $row['status'] === 'Overdue');
                                     $disabled_attr = $is_returnable ? '' : 'disabled';
                                     ?>
-                                    <form method="POST" style="display:inline;">
+                                    <form method="POST" style="display:inline;" onsubmit="return confirm('Confirm book return?');">
                                         <input type="hidden" name="BID" value="<?= htmlspecialchars($row['bid']) ?>">
-                                        <button type="submit" name="return_book" onclick="return confirm('Confirm book return?')" class="return-button" <?= $disabled_attr ?>>Returned</button>
+                                        <button type="submit" name="return_book" class="return-button" <?= $disabled_attr ?>>Returned</button>
                                     </form>
                                 </td>
                             </tr>
                         <?php endwhile;
                     elseif (isset($fetch_error)):
-                    else:
                         ?>
+                        <tr>
+                            <td colspan="11" style="text-align: center; color: red;"><?= htmlspecialchars($fetch_error) ?></td>
+                        </tr>
+                    <?php
+                    else:
+                    ?>
                         <tr>
                             <td colspan="11" style="text-align: center;">No books found matching your criteria.</td>
                         </tr>
@@ -516,7 +537,7 @@ if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping())
                 <h3>Edit Book
                     <span class="close-button">&times;</span>
                 </h3>
-                <form id="edit-book-form" method="POST" class="form-modal">
+                <form id="edit-book-form" method="POST" class="form-modal" onsubmit="return confirm('Are you sure you want to save changes to this book?');">
                     <input type="hidden" name="BID" id="modal-bid">
                     <input type="hidden" name="update_book" value="1">
                     <div class="modal-details">
