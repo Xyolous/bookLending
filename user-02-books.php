@@ -268,8 +268,8 @@ if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping())
 <body>
   <nav>
     <div class="nav-logo">
-      <img src="assets/logo.png" alt="site-logo" />
-      <h1>Library mo 'to</h1>
+      <img src="images/logo.png" alt="site-logo" />
+      <h1>Lumawig</h1>
     </div>
 
     <div class="nav-links">

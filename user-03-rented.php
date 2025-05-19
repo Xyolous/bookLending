@@ -51,96 +51,13 @@ $conn->close();
   <link rel="stylesheet" href="css/table.css">
   <title>User - Borrowed Books</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-    }
-
-    /* Default Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: #fff;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    th,
-    td {
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    th {
-      background-color: #333;
-      color: white;
-    }
-
-    .onhand-status {
-      font-weight: bold;
-      color: green;
-    }
-
-    /* Responsive Table */
-    @media (max-width: 768px) {
-
-      table,
-      thead,
-      tbody,
-      th,
-      td,
-      tr {
-        display: block;
-        width: 100%;
-      }
-
-      thead {
-        display: none;
-      }
-
-      tr {
-        margin-bottom: 1.5rem;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-        padding: 10px;
-      }
-
-      td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-        word-wrap: break-word;
-      }
-
-      td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        flex-basis: 40%;
-        color: white;
-      }
-
-      td:last-child {
-        border-bottom: none;
-      }
-    }
-  </style>
 </head>
 
 <body>
   <nav>
     <div class="nav-logo">
-      <img src="assets/logo.png" alt="site-logo" />
-      <h1>Library mo 'to</h1>
+      <img src="images/logo.png" alt="site-logo" />
+      <h1>Lumawig</h1>
     </div>
 
     <div class="nav-links">
@@ -212,7 +129,7 @@ $conn->close();
                 <tr>
                   <td data-label="Title"><?= htmlspecialchars($book['title']) ?></td>
                   <td data-label="Author"><?= htmlspecialchars($book['author']) ?></td>
-                  <td data-label="Status" class="onhand-status"><?= htmlspecialchars($book['display_status']) ?></td>
+                  <td data-label="Status" class="transaction-status-<?= htmlspecialchars(strtolower($book['display_status'])) ?>"><?= htmlspecialchars($book['display_status']) ?></td>
                   <td data-label="Borrow Date"><?= htmlspecialchars($book['borrow_date']) ?></td>
                   <td data-label="Due Date"><?= htmlspecialchars($book['due_date']) ?></td>
                 </tr>

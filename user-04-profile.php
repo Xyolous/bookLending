@@ -53,93 +53,13 @@ mysqli_close($conn);
     <link rel="stylesheet" href="css/user.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* .profile-container {
-            max-width: 100%;
-            margin: 5.5rem 0 0 0;
-            padding: 2rem;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .profile-avatar {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-avatar img {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #444;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-header h2 {
-            margin: 0;
-            font-size: 1.8rem;
-            color: #333;
-        }
-
-        .profile-info dl {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            row-gap: 1rem;
-            column-gap: 1.5rem;
-        }
-
-        .profile-info dt {
-            font-weight: bold;
-            color: #555;
-            width: max-content;
-        }
-
-        .profile-info dd {
-            margin: 0;
-            color: #222;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 4rem;
-            color: #777;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 600px) {
-
-            .profile-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .profile-avatar {
-                width: 100%;
-                justify-content: flex-start;
-                margin-bottom: 10px;
-            }
-        } */
-    </style>
 </head>
 
 <body>
     <nav>
         <div class="nav-logo">
-            <img src="assets/logo.png" alt="site-logo" />
-            <h1>Library mo 'to</h1>
+            <img src="images/logo.png" alt="site-logo" />
+            <h1>Lumawig</h1>
         </div>
 
         <div class="nav-links">
