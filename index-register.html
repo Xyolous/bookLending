@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/index.css" />
+        <title>Register</title>
+    </head>
+    <body>
+        <div class="background-slideshow"></div>
+
+        <main class="form-container">
+            <h1>Create Account</h1>
+            <form action="register.php" method="post">
+                <div class="two-column">
+                    <div class="index-element">
+                        <label for="first_name">First Name</label>
+                        <input
+                            type="text"
+                            id="first_name"
+                            name="first_name"
+                            placeholder="Enter your first name"
+                            required
+                        />
+                    </div>
+
+                    <div class="index-element">
+                        <label for="last_name">Last Name</label>
+                        <input
+                            type="text"
+                            id="last_name"
+                            name="last_name"
+                            placeholder="Enter your last name"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="index-element">
+                        <label for="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
+
+                    <div class="index-element">
+                        <label for="contact">Contact No.</label>
+                        <input
+                            type="text"
+                            id="contact"
+                            name="contact"
+                            placeholder="Enter your contact number"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="index-element">
+                    <label for="address">Address</label>
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        placeholder="Enter your address"
+                        required
+                    />
+                </div>
+
+                <div class="two-column">
+                    <div class="index-element">
+                        <label for="campus">Campus</label>
+                        <select name="campus" id="campus" required>
+                            <option value="" disabled selected>
+                                Select your campus
+                            </option>
+                            <option value="Antipolo">Antipolo</option>
+                            <option value="Binalonan">Binalonan</option>
+                            <option value="Guimba">Guimba</option>
+                            <option value="North Manila">North Manila</option>
+                            <option value="Quezon City">Quezon City</option>
+                        </select>
+                    </div>
+
+                    <div class="index-element">
+                        <label for="user_type">User Type</label>
+                        <select name="user_role" id="user_role" required>
+                            <option value="" disabled selected>
+                                Select user type
+                            </option>
+                            <option value="Guest">Guest</option>
+                            <option value="Student">Student</option>
+                            <option value="Faculty">Faculty</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div
+                    class="index-element"
+                    id="hidable-course"
+                    style="display: none"
+                >
+                    <label for="course">Course</label>
+                    <select name="course" id="course" required>
+                        <option value="" disabled selected>
+                            Select user course
+                        </option>
+                        <option value="BS Medical Technology">
+                            BS Medical Technology
+                        </option>
+                        <option value="BS Nursing">BS Nursing</option>
+                        <option value="BS Nutrition & Dietetics">
+                            BS Nutrition & Dietetics
+                        </option>
+                        <option value="BS Pharmacy">BS Pharmacy</option>
+                        <option value="BS Physical Therapy">
+                            BS Physical Therapy
+                        </option>
+                        <option value="BS Psychology">BS Psychology</option>
+                        <option value="BS Radiologic Technology">
+                            BS Radiologic Technology
+                        </option>
+                        <option value="BS Criminology">BS Criminology</option>
+                        <option value="BS Accountancy">BS Accountancy</option>
+                        <option value="BS Business Administration">
+                            BS Business Administration
+                        </option>
+                        <option value="BS Information Technology">
+                            BS Information Technology
+                        </option>
+                        <option value="BS Hospitality Management">
+                            BS Hospitality Management
+                        </option>
+                        <option value="BS Tourism Management">
+                            BS Tourism Management
+                        </option>
+                        <option value="BA Communication">
+                            BA Communication
+                        </option>
+                        <option value="BP Administration">
+                            BP Administration
+                        </option>
+                    </select>
+                </div>
+
+                <div class="index-element" id="hidable-id">
+                    <label for="school_id">School ID</label>
+                    <input
+                        type="text"
+                        id="school_id"
+                        name="school_id"
+                        placeholder="Enter your School ID"
+                        required
+                    />
+                </div>
+
+                <div class="two-column">
+                    <div class="index-element">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        />
+                    </div>
+
+                    <div class="index-element">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Re-enter password"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <button type="submit">Register</button>
+                <p>
+                    Have an account?
+                    <a href="index.html">Sign in here</a>
+                </p>
+            </form>
+        </main>
+
+        <script>
+            const userRoleSelect = document.getElementById("user_role");
+            const hidableCourse = document.getElementById("hidable-course");
+            const hidableId = document.getElementById("hidable-id");
+            const courseSelect = document.getElementById("course");
+            const schoolIdInput = document.getElementById("school_id");
+
+            function hideFields() {
+                hidableCourse.style.display = "none";
+                hidableId.style.display = "none";
+                courseSelect.required = false;
+                schoolIdInput.required = false;
+            }
+
+            userRoleSelect.addEventListener("change", function () {
+                const selectedRole = userRoleSelect.value;
+
+                hideFields();
+
+                if (selectedRole === "Student") {
+                    hidableCourse.style.display = "flex";
+                    hidableId.style.display = "flex";
+                    courseSelect.required = true;
+                    schoolIdInput.required = true;
+                } else if (selectedRole === "Faculty") {
+                    hidableId.style.display = "flex";
+                    courseSelect.required = false;
+                    schoolIdInput.required = true;
+                } else if (selectedRole === "Guest") {
+                    courseSelect.required = false;
+                    schoolIdInput.required = false;
+                    hideFields();
+                }
+            });
+
+            hideFields();
+        </script>
+    </body>
+</html>

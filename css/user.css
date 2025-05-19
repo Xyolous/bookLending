@@ -1,0 +1,236 @@
+.welcome-banner h1 {
+    font-size: 2rem;
+    color: #fff;
+    margin: 0;
+    text-align: center;
+}
+
+.library-details p {
+    margin-bottom: 1rem;
+    color: #c0c0c0;
+}
+
+.library-details p:last-child {
+    margin-bottom: 0;
+}
+
+.library-details p strong {
+    color: #e0e0e0;
+    font-weight: bold;
+}
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-form button[type="submit"],
+.filter-form button[type="button"] {
+    flex-shrink: 0;
+}
+
+main table tbody td:nth-child(3) {
+    font-weight: bold;
+}
+
+td.status-available {
+    color: #8bc34a;
+}
+
+td.status-reserved {
+    color: #ff9800;
+}
+
+td.status-borrowed {
+    color: #ff6b6b;
+}
+
+main table tbody td:nth-child(3):contains("Borrowed") {
+    color: #ff9800;
+}
+main table tbody td:nth-child(3):contains("Overdue") {
+    color: #f72e2e;
+}
+
+main section table td form {
+    display: inline-block;
+    margin: 0;
+}
+
+main section table td button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+main section table td button[name="action"][value="reserve"] {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+main
+    section
+    table
+    td
+    button[name="action"][value="reserve"]:hover:not(:disabled) {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+main section table td button[name="action"][value="cancel"] {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+main
+    section
+    table
+    td
+    button[name="action"][value="cancel"]:hover:not(:disabled) {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+main section table td span {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    min-width: 80px;
+}
+
+main section table td span:contains("Reserved") {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+main section table td span:contains("No Action") {
+    color: #b0b0b0;
+    font-style: italic;
+}
+
+.onhand-status {
+    text-align: left;
+    color: #ff6b6b;
+}
+
+.empty-table-message {
+    text-align: center;
+    font-style: italic;
+    color: #aaa;
+    padding: 1.5rem;
+}
+
+.profile-container {
+    max-width: 100%;
+    margin: 5.5rem 0 0 0;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.profile-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profile-avatar img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #444;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.profile-info dl {
+    display: grid;
+    grid-template-columns: 0fr 2fr;
+    row-gap: 1rem;
+    column-gap: 1.5rem;
+}
+
+.profile-info dt {
+    font-weight: bold;
+    color: #555;
+    width: max-content;
+}
+
+.profile-info dd {
+    margin: 0;
+    color: #222;
+}
+
+footer {
+    text-align: center;
+    margin-top: 4rem;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .welcome-banner h1 {
+        font-size: 1.5rem;
+    }
+
+    .library-details p {
+        margin-bottom: 0.75rem;
+    }
+
+    .filter-form {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .filter-form input,
+    .filter-form select,
+    .filter-form button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    main section table td form:last-child {
+        margin-bottom: 0;
+    }
+
+    main section table td button,
+    main section table td span {
+        width: 100%;
+        text-align: center;
+        padding: 0.5rem;
+    }
+
+    .empty-table-message {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-avatar {
+        width: 100%;
+        justify-content: flex-start;
+        margin-bottom: 10px;
+    }
+}

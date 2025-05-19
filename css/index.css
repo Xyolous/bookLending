@@ -1,0 +1,202 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.background-slideshow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: slideShow 30s infinite;
+    opacity: 0.6;
+}
+
+@keyframes slideShow {
+    0% {
+        background-image: url("../images/library1.jpg");
+    }
+    16% {
+        background-image: url("../images/library2.jpg");
+    }
+    32% {
+        background-image: url("../images/library3.jpg");
+    }
+    48% {
+        background-image: url("../images/library4.jpg");
+    }
+    64% {
+        background-image: url("../images/library5.jpg");
+    }
+    80% {
+        background-image: url("../images/library6.jpg");
+    }
+    100% {
+        background-image: url("../images/library1.jpg");
+    }
+}
+
+.form-container {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    color: white;
+    z-index: 1;
+}
+
+/* Form card */
+main {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    color: #fff;
+}
+
+/* Heading */
+main h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #fff;
+}
+
+/* Form layout */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.index-element {
+    display: flex;
+    flex-direction: column;
+}
+
+.index-element label {
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.index-element input,
+.index-element select {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.index-element input::placeholder {
+    color: black;
+    opacity: 0.5;
+}
+
+.index-element select {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+select option {
+    color: #fff;
+    background-color: #333;
+}
+
+/* Focus effects */
+.index-element input:focus,
+.index-element select:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Submit button */
+button {
+    padding: 12px;
+    background-color: #1abc9c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #16a085;
+}
+
+/* Link paragraph */
+p {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+p a {
+    color: #00ffff;
+    text-decoration: underline;
+}
+
+/* Two-column layout for larger screens */
+.two-column {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.two-column .index-element {
+    flex: 1;
+    min-width: 48%;
+}
+
+.index-element-course,
+.index-elemento-id {
+    display: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .two-column .index-element {
+        min-width: 100%;
+    }
+
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 0;
+        min-height: 100dvh;
+    }
+    body {
+        overflow-y: scroll;
+    }
+}
