@@ -131,7 +131,6 @@
 .user-card {
     background-color: #333;
     padding: 15px;
-    margin-bottom: 20px;
     border-radius: 8px;
     border: 1px solid #4a4a4a;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -249,6 +248,18 @@
 
 .user-role {
     margin-bottom: 15px;
+}
+
+#admin-users,
+#guest-users,
+#student-users,
+#faculty-users {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    h2 {
+        margin-bottom: 0;
+    }
 }
 
 @media (max-width: 768px) {

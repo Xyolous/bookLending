@@ -107,7 +107,7 @@ mysqli_close($conn);
         <div class="profile-container">
             <div class="profile-header">
                 <div class="profile-avatar">
-                    <img src="images/boy.png" alt="User Avatar">
+                    <img src="images/logo.png" alt="User Avatar">
                 </div>
                 <h2><?= htmlspecialchars($first_name . ' ' . $last_name) ?></h2>
             </div>

@@ -134,78 +134,82 @@ $conn->close();
 
   <main>
     <section>
-      <?php if (empty($all_transactions)):
-      ?>
-        <p>No transaction records found.</p>
-      <?php else: ?>
-        <table>
-          <thead>
-            <tr>
-              <th>Transaction ID</th>
-              <th>Book Title</th>
-              <th>Borrower</th>
-              <th>Borrow Date</th>
-              <th>Due Date</th>
-              <th>Return Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php if (!empty($overdue_transactions)):
-            ?>
-              <tr>
-                <td colspan="7" class="transaction-header">OVERDUE TRANSACTIONS</td>
-              </tr>
-              <?php foreach ($overdue_transactions as $row):
-              ?>
-                <tr>
-                  <td data-label="TID"><?php echo htmlspecialchars($row['TID']); ?></td>
-                  <td data-label="Title"><?php echo htmlspecialchars($row['book_title']); ?></td>
-                  <td data-label="Name"><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
-                  <td data-label="Borrow Date"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
-                  <td data-label="Due Date"><?php echo htmlspecialchars($row['due_date']); ?></td>
-                  <td data-label="Return Date"><?php echo $row['return_date'] ? htmlspecialchars($row['return_date']) : 'N/A'; ?></td>
-                  <td data-label="Status" class="transaction-status-overdue"> <?php echo htmlspecialchars($row['display_status']); ?>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            <?php endif; ?>
+      <h2>Transaction Records</h2>
+      <div class="user-card">
+        <?php if (empty($all_transactions)):
+        ?>
+          <p style="text-align: center;">No transaction records found.</p>
+        <?php else: ?>
 
-            <?php if (!empty($other_transactions)):
-            ?>
+          <table>
+            <thead>
+              <tr>
+                <th>Transaction ID</th>
+                <th>Book Title</th>
+                <th>Borrower</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
               <?php if (!empty($overdue_transactions)):
               ?>
                 <tr>
-                  <td colspan="7" class="transaction-header">OTHER TRANSACTIONS</td>
+                  <td colspan="7" class="transaction-header">OVERDUE TRANSACTIONS</td>
                 </tr>
+                <?php foreach ($overdue_transactions as $row):
+                ?>
+                  <tr>
+                    <td data-label="TID"><?php echo htmlspecialchars($row['TID']); ?></td>
+                    <td data-label="Title"><?php echo htmlspecialchars($row['book_title']); ?></td>
+                    <td data-label="Name"><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
+                    <td data-label="Borrow Date"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
+                    <td data-label="Due Date"><?php echo htmlspecialchars($row['due_date']); ?></td>
+                    <td data-label="Return Date"><?php echo $row['return_date'] ? htmlspecialchars($row['return_date']) : 'N/A'; ?></td>
+                    <td data-label="Status" class="status-overdue"> <?php echo htmlspecialchars($row['display_status']); ?>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
               <?php endif; ?>
 
-              <?php foreach ($other_transactions as $row):
+              <?php if (!empty($other_transactions)):
               ?>
-                <?php
-                $status_class = '';
-                if ($row['display_status'] === 'Returned') {
-                  $status_class = 'transaction-status-returned';
-                } elseif ($row['display_status'] === 'Borrowed') {
-                  $status_class = 'transaction-status-borrowed';
-                }
+                <?php if (!empty($overdue_transactions)):
                 ?>
-                <tr>
-                  <td data-label="TID"><?php echo htmlspecialchars($row['TID']); ?></td>
-                  <td data-label="Title"><?php echo htmlspecialchars($row['book_title']); ?></td>
-                  <td data-label="Name"><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
-                  <td data-label="Brrow Date"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
-                  <td data-label="Due Date"><?php echo htmlspecialchars($row['due_date']); ?></td>
-                  <td data-label="Return Date"><?php echo $row['return_date'] ? htmlspecialchars($row['return_date']) : 'N/A'; ?></td>
-                  <td data-label="Status" class="<?php echo $status_class; ?>"> <?php echo htmlspecialchars($row['display_status']); ?>
-                  </td>
-                </tr>
-              <?php endforeach; ?>
-            <?php endif; ?>
+                  <tr>
+                    <td colspan="7" class="transaction-header">OTHER TRANSACTIONS</td>
+                  </tr>
+                <?php endif; ?>
 
-          </tbody>
-        </table>
-      <?php endif; ?>
+                <?php foreach ($other_transactions as $row):
+                ?>
+                  <?php
+                  $status_class = '';
+                  if ($row['display_status'] === 'Returned') {
+                    $status_class = 'status-returned';
+                  } elseif ($row['display_status'] === 'Borrowed') {
+                    $status_class = 'status-borrowed';
+                  }
+                  ?>
+                  <tr>
+                    <td data-label="TID"><?php echo htmlspecialchars($row['TID']); ?></td>
+                    <td data-label="Title"><?php echo htmlspecialchars($row['book_title']); ?></td>
+                    <td data-label="Name"><?php echo htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
+                    <td data-label="Brrow Date"><?php echo htmlspecialchars($row['borrow_date']); ?></td>
+                    <td data-label="Due Date"><?php echo htmlspecialchars($row['due_date']); ?></td>
+                    <td data-label="Return Date"><?php echo $row['return_date'] ? htmlspecialchars($row['return_date']) : 'N/A'; ?></td>
+                    <td data-label="Status" class="<?php echo $status_class; ?>"> <?php echo htmlspecialchars($row['display_status']); ?>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
+
+            </tbody>
+          </table>
+        <?php endif; ?>
+      </div>
     </section>
   </main>
 

@@ -107,36 +107,39 @@ $conn->close();
 
   <main>
     <section>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Status</th>
-              <th>Borrow Date</th>
-              <th>Due Date</th>
-            </tr>
-
-          </thead>
-          <tbody>
-            <?php if (empty($transaction_books)) : ?>
+      <h2>Borrowed Books</h2>
+      <div class="user-card">
+        <div class="table-wrapper">
+          <table>
+            <thead>
               <tr>
-                <td colspan="5" style="text-align: center;">No books currently borrowed or overdue.</td>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Status</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
               </tr>
-            <?php else : ?>
-              <?php foreach ($transaction_books as $book) : ?>
+
+            </thead>
+            <tbody>
+              <?php if (empty($transaction_books)) : ?>
                 <tr>
-                  <td data-label="Title"><?= htmlspecialchars($book['title']) ?></td>
-                  <td data-label="Author"><?= htmlspecialchars($book['author']) ?></td>
-                  <td data-label="Status" class="transaction-status-<?= htmlspecialchars(strtolower($book['display_status'])) ?>"><?= htmlspecialchars($book['display_status']) ?></td>
-                  <td data-label="Borrow Date"><?= htmlspecialchars($book['borrow_date']) ?></td>
-                  <td data-label="Due Date"><?= htmlspecialchars($book['due_date']) ?></td>
+                  <td colspan="5" style="text-align: center;">No books currently borrowed or overdue.</td>
                 </tr>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </tbody>
-        </table>
+              <?php else : ?>
+                <?php foreach ($transaction_books as $book) : ?>
+                  <tr>
+                    <td data-label="Title"><?= htmlspecialchars($book['title']) ?></td>
+                    <td data-label="Author"><?= htmlspecialchars($book['author']) ?></td>
+                    <td data-label="Status" class="status-<?= htmlspecialchars(strtolower($book['display_status'])) ?>"><?= htmlspecialchars($book['display_status']) ?></td>
+                    <td data-label="Borrow Date"><?= htmlspecialchars($book['borrow_date']) ?></td>
+                    <td data-label="Due Date"><?= htmlspecialchars($book['due_date']) ?></td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>

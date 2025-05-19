@@ -493,7 +493,7 @@ if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping())
                                 <td data-label="Date Published"><?= htmlspecialchars($row['date_published']) ?></td>
                                 <td data-label="Main Type" class="book-main"><?= htmlspecialchars($row['main_type']) ?></td>
                                 <td data-label="Specific Type" class="book-specific"><?= htmlspecialchars($row['specific_type']) ?></td>
-                                <td data-label="Status" class="book-status"><?= htmlspecialchars($row['status']) ?></td>
+                                <td data-label="Status" class="book-<?= htmlspecialchars(strtolower($row['status'])) ?>"><?= htmlspecialchars($row['status']) ?></td>
                                 <td data-label="Location" class="book-location"><?= htmlspecialchars($row['book_location']) ?></td>
                                 <td data-label="Added"><?= htmlspecialchars($row['date_added']) ?></td>
                                 <td data-label="Updated"><?= htmlspecialchars($row['date_updated']) ?></td>

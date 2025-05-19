@@ -65,7 +65,6 @@ main table td {
     main table tr,
     main section table tr {
         display: block;
-        margin-bottom: 1.5rem;
         border: 1px solid #3a3a3a;
         border-radius: 8px;
         background-color: #2b2b2b;
@@ -136,5 +135,9 @@ main table td {
     }
     td[colspan]::before {
         display: none;
+    }
+
+    tr {
+        margin-bottom: 1.5rem;
     }
 }

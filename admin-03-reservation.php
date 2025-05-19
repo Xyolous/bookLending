@@ -250,43 +250,45 @@ if ($conn && is_object($conn) && method_exists($conn, 'close') && $conn->ping())
         <?php foreach ($reservations_by_role as $role => $result): if ($result === false) continue; ?>
             <section>
                 <h2><?= htmlspecialchars($role); ?> User Reservations</h2>
-                <?php if (mysqli_num_rows($result) > 0): ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Reservation ID</th>
-                                <th>Book Title</th>
-                                <th>User Name</th>
-                                <th>Reservation Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                <section class="user-card">
+                    <?php if (mysqli_num_rows($result) > 0): ?>
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td data-label="RID"><?= htmlspecialchars($row['RID']); ?></td>
-                                    <td data-label="Title"><?= htmlspecialchars($row['book_title']); ?></td>
-                                    <td data-label="User"><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
-                                    <td data-label="Date Reserved"><?= htmlspecialchars($row['reservation_date']); ?></td>
-                                    <td class="actions-cell">
-                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Handover this book?');">
-                                            <input type="hidden" name="RID" value="<?= $row['RID']; ?>">
-                                            <input type="hidden" name="action" value="handover">
-                                            <button type="submit">Handover</button>
-                                        </form>
-                                        <form method="POST" style="display:inline;" onsubmit="return confirm('Cancel this reservation?');">
-                                            <input type="hidden" name="RID" value="<?= $row['RID']; ?>">
-                                            <input type="hidden" name="action" value="cancel">
-                                            <button type="submit">Cancel</button>
-                                        </form>
-                                    </td>
+                                    <th>Reservation ID</th>
+                                    <th>Book Title</th>
+                                    <th>User Name</th>
+                                    <th>Reservation Date</th>
+                                    <th>Actions</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p style="text-align: center;">No reservations from <?= htmlspecialchars($role) . 's'; ?>.</p>
-                <?php endif; ?>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                                    <tr>
+                                        <td data-label="RID"><?= htmlspecialchars($row['RID']); ?></td>
+                                        <td data-label="Title"><?= htmlspecialchars($row['book_title']); ?></td>
+                                        <td data-label="User"><?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']); ?></td>
+                                        <td data-label="Date Reserved"><?= htmlspecialchars($row['reservation_date']); ?></td>
+                                        <td class="actions-cell">
+                                            <form method="POST" style="display:inline;" onsubmit="return confirm('Handover this book?');">
+                                                <input type="hidden" name="RID" value="<?= $row['RID']; ?>">
+                                                <input type="hidden" name="action" value="handover">
+                                                <button type="submit">Handover</button>
+                                            </form>
+                                            <form method="POST" style="display:inline;" onsubmit="return confirm('Cancel this reservation?');">
+                                                <input type="hidden" name="RID" value="<?= $row['RID']; ?>">
+                                                <input type="hidden" name="action" value="cancel">
+                                                <button type="submit">Cancel</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p style="text-align: center;">No reservations from <?= htmlspecialchars($role) . 's'; ?>.</p>
+                    <?php endif; ?>
+                </section>
             </section>
         <?php mysqli_free_result($result);
         endforeach; ?>
